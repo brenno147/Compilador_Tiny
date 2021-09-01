@@ -1,16 +1,16 @@
 { 
   gcc -o tiny main.c analyze.c cgen.c code.c parse.c scan.c symtab.c util.c
   .\tiny.exe example.tny
-  gcc -o ztinymachine tm.c
-  .\ztinymachine.exe example.tm
+  gcc -o tinymachine tm.c
+  .\tinymachine.exe example.tm
 }
 read x; { input an integer }
 if 0 < x then { don't compute if x <= 0 }
   f_4ct := 1;
-  repeat
+  while 0 < x do
     f_4ct := f_4ct * x;
     x := x - 1
-  until x = 0;
+  endwhile;
   write f_4ct  { output factorial of x }
 endif
 
