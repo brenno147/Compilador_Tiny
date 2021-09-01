@@ -17,7 +17,7 @@ void printToken( TokenType token, const char* tokenString )
   { case IF:
     case THEN:
     case ELSE:
-    case END:
+    case ENDIF:
     case REPEAT:
     case UNTIL:
     case READ:
@@ -25,6 +25,9 @@ void printToken( TokenType token, const char* tokenString )
     case CASE:
     case ENDSWITCH:
     case WRITE:
+    case WHILE:
+    case DO:
+    case ENDWHILE:
       fprintf(listing,
          "reserved word: %s\n",tokenString);
       break;
@@ -157,6 +160,9 @@ void printTree( TreeNode * tree )
           break;
         case CaseK:
           fprintf(listing,"Case\n");
+          break;
+        case WhileK:
+          fprintf(listing,"While\n");
           break;
         default:
           fprintf(listing,"Unknown ExpNode kind\n");
