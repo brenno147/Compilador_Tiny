@@ -24,7 +24,7 @@ static void cGen (TreeNode * tree);
 /* Procedure genStmt generates code at a statement node */
 static void genStmt( TreeNode * tree)
 { TreeNode * p1, * p2, * p3, *curCase;
-  int savedLoc1,savedLoc2,currentLoc, jmpToNextLoc, lastPos;
+  int savedLoc1,savedLoc2,savedLoc3,currentLoc, jmpToNextLoc, lastPos;
   int loc;
   switch (tree->kind.stmt) {
       case SwitchK :
@@ -102,7 +102,20 @@ static void genStmt( TreeNode * tree)
          emitRM_Abs("JEQ",ac,savedLoc1,"repeat: jmp back to body");
          if (TraceCode)  emitComment("<- repeat") ;
          break; /* repeat */
+      
+      /*case WhileK:
+         if (TraceCode) emitComment("-> while") ;
+         p1 = tree->child[0] ;
+         p2 = tree->child[1] ;
+         savedLoc2 = emitSkip(1);
 
+         cGen(p1);
+         emitComment("repeat: jump after body comes back here");
+
+         emitRM_Abs("JEQ",ac,savedLoc1,"repeat: jmp back to body");
+
+
+         break;*/
       case AssignK:
          if (TraceCode) emitComment("-> assign") ;
          /* generate code for rhs */

@@ -58,7 +58,7 @@ static struct
     } reservedWords[MAXRESERVED]
    = {{"if",IF},{"then",THEN},{"else",ELSE},{"endif",ENDIF},
       {"repeat",REPEAT},{"until",UNTIL},{"read",READ},
-      {"write",WRITE}, {"while", WHILE}, {"endwhile", ENDWHILE}};
+      {"write",WRITE},{"while", WHILE},{"do", DO}, {"endwhile", ENDWHILE}};
 
 /* lookup an identifier to see if it is a reserved word */
 /* uses linear search */
@@ -171,7 +171,7 @@ TokenType getToken(void)
          }
          break;
        case INID:
-         if (!isalpha(c))
+         if (!isalpha(c) && !isdigit(c) && c!='_')
          { /* backup in the input */
            ungetNextChar();
            save = FALSE;

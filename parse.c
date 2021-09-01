@@ -17,10 +17,10 @@ static TreeNode * stmt_sequence(void);
 static TreeNode * statement(void);
 static TreeNode * if_stmt(void);
 static TreeNode * repeat_stmt(void);
+static TreeNode * while_stmt(void);
 static TreeNode * assign_stmt(void);
 static TreeNode * read_stmt(void);
 static TreeNode * write_stmt(void);
-static TreeNode * while_stmt(void);
 static TreeNode * exp(void);
 static TreeNode * simple_exp(void);
 static TreeNode * term(void);
@@ -44,8 +44,8 @@ static void match(TokenType expected)
 TreeNode * stmt_sequence(void)
 { TreeNode * t = statement();
   TreeNode * p = t;
-  while ((token!=ENDFILE) && (token!=ENDIF) &&
-         (token!=ELSE) && (token!=UNTIL) && (token!=CASE) && (token!=ENDSWITCH) && (token!=ENDWHILE))
+  while ((token!=ENDFILE) && (token!=END) &&
+         (token!=ELSE) && (token!=UNTIL) && (token!=CASE) && (token!=ENDSWITCH))
   { TreeNode * q;
     match(SEMI);
     q = statement();
@@ -68,7 +68,6 @@ TreeNode * statement(void)
     case ID : t = assign_stmt(); break;
     case READ : t = read_stmt(); break;
     case WRITE : t = write_stmt(); break;
-    case WHILE : t = while_stmt(); break;
     default : syntaxError("Unexpected token -> ");
               printToken(token,tokenString);
               token = getToken();
@@ -87,7 +86,7 @@ TreeNode * if_stmt(void)
     match(ELSE);
     if (t!=NULL) t->child[2] = stmt_sequence();
   }
-  match(ENDIF);
+  match(END);
   return t;
 }
 
@@ -104,11 +103,11 @@ TreeNode * while_stmt(void)
 { TreeNode * t = newStmtNode(WhileK);
   match(WHILE);
   if (t!=NULL) t->child[0] = exp();
+  match(DO);
   if (t!=NULL) t->child[1] = stmt_sequence();
   match(ENDWHILE);
   return t;
 }
-
 TreeNode * assign_stmt(void)
 { TreeNode * t = newStmtNode(AssignK);
   if ((t!=NULL) && (token==ID))
